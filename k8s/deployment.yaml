@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-serving-api
+  labels:
+    app: ml-serving-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ml-serving-api
+  template:
+    metadata:
+      labels:
+        app: ml-serving-api
+    spec:
+      containers:
+      - name: ml-serving-api
+        image: anushkamaji24/ml-serving-api:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://postgres:postgres@postgres/mldb"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
